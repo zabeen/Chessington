@@ -14,56 +14,38 @@ namespace Chessington.GameEngine.Pieces
             List<Square> availablePositions = new List<Square>();
 
             // get current position
-            Square currentPosition = board.FindPiece(this);
+            Square curr = board.FindPiece(this);
 
-            // set row numbers
-            int rowAbove = currentPosition.Row - 1;
-            int rowBelow = currentPosition.Row + 1;
+            // Row values at left and right edges of board
+            int topLeft = curr.Row - curr.Col;
+            int topRight = curr.Row + curr.Col - 7;
+            int bottomLeft = curr.Row + curr.Col;
+            int bottomRight = curr.Row - curr.Col + 7;
 
-            // move from right of current position to right edge of board
-            for (int col = currentPosition.Col + 1; col < 8; col++)
-            {
-                // add new squares until top row is reached
-                if (rowAbove > -1)
-                {
-                    availablePositions.Add(new Square(rowAbove, col));
-                    rowAbove--;
-                }
+            // add squares top left to bottom right
+            AddSquareForEachColAtSpecifiedRows(
+                ref availablePositions,
+                rows: Enumerable.Range(topLeft, bottomRight - topLeft + 1).ToList());
 
-                // add new squares until bottom row is reached
-                if (rowBelow < 8)
-                {
-                    availablePositions.Add(new Square(rowBelow, col));
-                    rowBelow++;
-                }
-            }
+            // add squares bottom left to top right
+            AddSquareForEachColAtSpecifiedRows(
+                ref availablePositions,
+                rows: Enumerable.Range(topRight, bottomLeft - topRight + 1).Reverse().ToList());
 
-            // reset row numbers
-            rowAbove = currentPosition.Row - 1;
-            rowBelow = currentPosition.Row + 1;
-
-            // move from left of current position to left edge of board
-            for (int col = currentPosition.Col - 1; col > -1; col--)
-            {
-                // add new squares until top row is reached
-                if (rowAbove > -1)
-                {
-                    availablePositions.Add(new Square(rowAbove, col));
-                    rowAbove--;
-                }
-
-                // add new squares until bottom row is reached
-                if (rowBelow < 8)
-                {
-                    availablePositions.Add(new Square(rowBelow, col));
-                    rowBelow++;
-                }
-            }
-
-            //remove squares that match starting/ current position
-            availablePositions.RemoveAll(a => a == currentPosition);
+            //remove squares that match current position
+            availablePositions.RemoveAll(a => a == curr);
 
             return availablePositions;
+        }
+
+        private void AddSquareForEachColAtSpecifiedRows (ref List<Square> availablePositions, List<int> rows)
+        {            
+            for (int col = 0; col < 8; col++)
+            {
+                // only add square if row value is within board
+                if (rows[col] >= 0 && rows[col] < 8)
+                    availablePositions.Add(Square.At(rows[col], col));
+            }
         }
     }
 }
