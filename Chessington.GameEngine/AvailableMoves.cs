@@ -15,6 +15,24 @@ namespace Chessington.GameEngine
             Current = current;
         }
 
+        public void RemoveCurrentSquare()
+        {
+            //remove squares that match current position
+            Squares.RemoveAll(s => s == Current);
+        }
+
+        public void AddKnightsSquares()
+        {
+            // create 2D array of move adjustments
+            int[,] adjustments = new int [,] { { 2, 1 }, { 2, -1 }, { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }, { -2, 1 }, { -2, -1 } };
+
+            // apply move adjustments to current square and save to list
+            for (int i = 0; i < 8; i++)
+            {
+                Squares.Add(Square.At(Current.Row + adjustments[i,0], Current.Col + adjustments[i,1]));
+            }
+        }
+
         public void AddForwardSquares(List<int> numberOfRowsToMove)
         {
             foreach (int i in numberOfRowsToMove)
@@ -54,12 +72,6 @@ namespace Chessington.GameEngine
             // add squares from bottom left to top right
             AddSquareForEachColAtSpecifiedRows(
                 Enumerable.Range(topRowRightEdge, bottomRowLeftEdge - topRowRightEdge + 1).Reverse().ToList());
-        }
-
-        public void RemoveCurrentSquare()
-        {
-            //remove squares that match current position
-            Squares.RemoveAll(s => s == Current);
         }
 
         private void AddSquareForEachColAtSpecifiedRows(List<int> rows)
