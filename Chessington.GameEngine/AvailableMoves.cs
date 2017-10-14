@@ -21,13 +21,10 @@ namespace Chessington.GameEngine
             Squares.RemoveAll(s => s == Current);
         }
 
-        public void AddKnightsSquares()
+        public void AddAdjustedSquares(int[,] adjustments)
         {
-            // create 2D array of move adjustments
-            int[,] adjustments = new int [,] { { 2, 1 }, { 2, -1 }, { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }, { -2, 1 }, { -2, -1 } };
-
             // apply move adjustments to current square and save to list
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < adjustments.Length/2; i++)
             {
                 Squares.Add(Square.At(Current.Row + adjustments[i,0], Current.Col + adjustments[i,1]));
             }
