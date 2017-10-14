@@ -15,7 +15,7 @@ namespace Chessington.GameEngine
             Current = current;
         }
 
-        public void AddForwardMoves(List<int> numberOfRowsToMove)
+        public void AddForwardSquares(List<int> numberOfRowsToMove)
         {
             foreach (int i in numberOfRowsToMove)
             {

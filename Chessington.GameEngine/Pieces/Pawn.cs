@@ -33,7 +33,7 @@ namespace Chessington.GameEngine.Pieces
                 rowsToMove = rowsToMove.Select(i => -i).ToList();
 
             // add forward moves
-            moves.AddForwardMoves(rowsToMove);
+            moves.AddForwardSquares(rowsToMove);
 
             // return list of available moves
             return moves.Squares;
