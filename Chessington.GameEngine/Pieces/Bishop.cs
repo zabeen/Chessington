@@ -12,7 +12,7 @@ namespace Chessington.GameEngine.Pieces
         {
             AvailableMoves moves = new AvailableMoves(board.FindPiece(this));
             moves.AddDiagonalSquares();
-            moves.RemoveCurrentSquareFromList();
+            moves.RemoveCurrentSquare();
 
             return moves.Squares;
         }

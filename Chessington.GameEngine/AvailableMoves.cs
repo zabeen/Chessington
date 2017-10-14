@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chessington.GameEngine.Pieces
+namespace Chessington.GameEngine
 {
     public class AvailableMoves
     {
@@ -13,6 +13,18 @@ namespace Chessington.GameEngine.Pieces
         {
             Squares = new List<Square>();
             Current = current;
+        }
+
+        public void AddForwardMoves(List<int> numberOfRowsToMove)
+        {
+            foreach (int i in numberOfRowsToMove)
+            {
+                // create new position
+                Square newPosition = Square.At(Current.Row + i, Current.Col);
+
+                // Add move to list
+                Squares.Add(newPosition);
+            }
         }
 
         public void AddLateralSquares()
@@ -44,10 +56,10 @@ namespace Chessington.GameEngine.Pieces
                 Enumerable.Range(topRowRightEdge, bottomRowLeftEdge - topRowRightEdge + 1).Reverse().ToList());
         }
 
-        public void RemoveCurrentSquareFromList()
+        public void RemoveCurrentSquare()
         {
             //remove squares that match current position
-            Squares.RemoveAll(a => a == Current);
+            Squares.RemoveAll(s => s == Current);
         }
 
         private void AddSquareForEachColAtSpecifiedRows(List<int> rows)
